@@ -491,7 +491,7 @@ public class AudioPlayer extends JFrame {
 			File selectedFile=fileChooser.getSelectedFile();
 			System.out.println("Selected file: "+selectedFile.getAbsolutePath());
 			currentTrack.setText(selectedFile.getName());
-			setTitle("Audio Player - "+selectedFile.getName());
+			setTitle("φb's Audio Player - "+selectedFile.getName());
 			currentFile=selectedFile;
 			try {
 				if (!paused) stopPlay();
