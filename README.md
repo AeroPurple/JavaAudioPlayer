@@ -11,3 +11,5 @@ Java-based audio player with visualizations I initially made as a final project 
 | **MP3** | **✗** No |
 | **AAC** | **✗** No |
 | **M4A** | **✗** No |
+
+Icons are from my free icon pack, [Lollipop](https://github.com/AeroPurple/Lollipop), with the exception of the volume icon, which was instead sourced from my [BlueGlass WMP skin](https://www.deviantart.com/aeropurple/art/BlueGlass-WMP-1134887718).
