@@ -92,7 +92,7 @@ public class AudioPlayer extends JFrame {
 	throws UnsupportedAudioFileException, IOException {
 		audioVis=new Visualizer();
 		
-		setTitle("φb's Audio Player"); //inserted on 11/09/2025
+		setTitle("φbAudioPlayer"); //inserted on 11/09/2025
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 640, 480);
 		JPanel contentPane=new JPanel();
@@ -491,7 +491,7 @@ public class AudioPlayer extends JFrame {
 			File selectedFile=fileChooser.getSelectedFile();
 			System.out.println("Selected file: "+selectedFile.getAbsolutePath());
 			currentTrack.setText(selectedFile.getName());
-			setTitle("φb's Audio Player - "+selectedFile.getName());
+			setTitle("φbAudioPlayer - "+selectedFile.getName());
 			currentFile=selectedFile;
 			try {
 				if (!paused) stopPlay();
