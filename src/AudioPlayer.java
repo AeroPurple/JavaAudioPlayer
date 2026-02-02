@@ -23,6 +23,7 @@ import java.awt.event.MouseEvent;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.prefs.Preferences;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -82,6 +83,9 @@ public class AudioPlayer extends JFrame {
 	ImageIcon unmuteIcon=new ImageIcon("res\\nosound.png");
 	ImageIcon openIcon=new ImageIcon("res\\control_eject.png");
 	
+	Preferences prefs=Preferences.userRoot().node(this.getClass().getName());
+	String lastDir;
+	
 	public static void main(String[] args)
 	throws UnsupportedAudioFileException, IOException {
 		AudioPlayer frame=new AudioPlayer();
@@ -90,9 +94,12 @@ public class AudioPlayer extends JFrame {
 	
 	public AudioPlayer()
 	throws UnsupportedAudioFileException, IOException {
+		lastDir=prefs.get("lastDir", "%userprofile%/Music");
+		System.out.println(lastDir);
+		
 		audioVis=new Visualizer();
 		
-		setTitle("φbAudioPlayer"); //inserted on 11/09/2025
+		setTitle("φbAudioPlayer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 640, 480);
 		JPanel contentPane=new JPanel();
@@ -406,7 +413,7 @@ public class AudioPlayer extends JFrame {
 	
 	private void openButton_mouseClicked(MouseEvent e) 
 	throws UnsupportedAudioFileException, IOException {
-		JFileChooser fileChooser=new JFileChooser();
+		JFileChooser fileChooser=new JFileChooser(lastDir);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.addChoosableFileFilter(new FileFilter() {
 
@@ -490,6 +497,9 @@ public class AudioPlayer extends JFrame {
 		if (result==JFileChooser.APPROVE_OPTION) {
 			File selectedFile=fileChooser.getSelectedFile();
 			System.out.println("Selected file: "+selectedFile.getAbsolutePath());
+			prefs.put("lastDir", selectedFile.getParent());
+			lastDir=prefs.get("lastDir", "%userprofile%/Music");
+			System.out.println(lastDir);
 			currentTrack.setText(selectedFile.getName());
 			setTitle("φbAudioPlayer - "+selectedFile.getName());
 			currentFile=selectedFile;
