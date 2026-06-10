@@ -5,7 +5,8 @@ Java-based audio player with visualizations I initially made as a final project 
 | File Type | Support |
 | --- | --- |
 | **WAV, 8-bit** | **✓** Yes |
-| **WAV, 16-bit** | **✓** Yes |
+| **WAV, 16-bit (PcmWaveformat)** | **✓** Yes |
+| **WAV, 16-bit (WaveFormatEx)** | **✗** No |
 | **WAV, 24-bit** | **✗** No |
 | **WAV, 32-bit** | **✗** No |
 | **MP3** | **✗** No |
