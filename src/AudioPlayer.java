@@ -358,6 +358,8 @@ public class AudioPlayer extends JFrame {
 				clip.addLineListener(e1 -> {
 					if (e1.getType()==LineEvent.Type.STOP) {
 						stopPlay();
+						currentMS=0L;
+						currentFrame=0L;
 					}
 				});
 			} else {
@@ -378,6 +380,8 @@ public class AudioPlayer extends JFrame {
 					clip.addLineListener(e1 -> {
 						if (e1.getType()==LineEvent.Type.STOP) {
 							stopPlay();
+							currentMS=0L;
+							currentFrame=0L;
 						}
 					});
 				} else {
@@ -399,6 +403,7 @@ public class AudioPlayer extends JFrame {
 	private void stopButton_mouseClicked(MouseEvent e) {
 		try {
 			stopPlay();
+			currentMS=0L;
 			currentFrame=0L;
 			stopped=true;
 			paused=false;
