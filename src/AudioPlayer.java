@@ -399,6 +399,7 @@ public class AudioPlayer extends JFrame {
 	private void stopButton_mouseClicked(MouseEvent e) {
 		try {
 			stopPlay();
+			currentFrame=0L;
 			stopped=true;
 			paused=false;
 			loadFile();
