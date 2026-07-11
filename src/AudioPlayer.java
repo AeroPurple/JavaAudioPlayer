@@ -48,7 +48,8 @@ public class AudioPlayer extends JFrame {
 	static File currentFile;
 	static Clip clip;
 	AudioInputStream audioInputStream;
-	Long currentFrame=null;
+	Long currentMS=null;
+	static Long currentFrame=null;
 	Long trackLength=null;
 	boolean stopped=true;
 	boolean paused=false;
@@ -118,7 +119,7 @@ public class AudioPlayer extends JFrame {
 					try {
 						if (invalidFile) throw new UnsupportedAudioFileException();
 						if (trackLength!=null) 
-							currentFrame=(long) source.getValue();
+							currentMS=(long) source.getValue();
 						clip.setMicrosecondPosition(source.getValue());
 						audioVis.repaint();
 					} catch (Exception e1) {
@@ -279,10 +280,12 @@ public class AudioPlayer extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					trackLength=clip.getMicrosecondLength();
-					if (!paused)
-						currentFrame=clip.getMicrosecondPosition()%trackLength;
+					if (!paused) {
+						currentMS=clip.getMicrosecondPosition()%trackLength;
+						currentFrame=clip.getLongFramePosition()%clip.getFrameLength();
+					}
 					playPos.setMaximum(Math.toIntExact(trackLength));
-					playPos.setValue(Math.toIntExact(currentFrame));
+					playPos.setValue(Math.toIntExact(currentMS));
 					if (trackLength<=10000000) { // 10 seconds
 						playPos.setMinorTickSpacing(100000); // 0.1 s
 						playPos.setMajorTickSpacing(1000000); // 1 s
@@ -315,7 +318,7 @@ public class AudioPlayer extends JFrame {
 				} catch (Exception e1) {
 					System.err.println("Exception "+e1+" occured on regular timer update");
 				}
-				timeElapsed.setText(humanTime(currentFrame)+"/"+humanTime(trackLength));
+				timeElapsed.setText(humanTime(currentMS)+"/"+humanTime(trackLength));
 			}
 		});
 		timer.start();
@@ -339,10 +342,12 @@ public class AudioPlayer extends JFrame {
 		try {
 			if (invalidFile) throw new UnsupportedAudioFileException();
 			if (stopped) {
-				if (currentFrame.compareTo(trackLength)==0
+				System.out.println(trackLength);
+				if (currentMS.compareTo(trackLength)==0
 				&& trackLength!=null) {
+					currentMS=0L;
 					currentFrame=0L;
-					clip.setMicrosecondPosition(currentFrame);
+					clip.setMicrosecondPosition(currentMS);
 				}
 				clip.start();
 				if (looped) {
@@ -358,11 +363,12 @@ public class AudioPlayer extends JFrame {
 			} else {
 				if (paused) {
 					//resumes
-					clip.setMicrosecondPosition(currentFrame);
+					clip.setMicrosecondPosition(currentMS);
 					paused=false;
-					if (currentFrame==trackLength && trackLength!=null) {
+					if (currentMS==trackLength && trackLength!=null) {
+						currentMS=0L;
 						currentFrame=0L;
-						clip.setMicrosecondPosition(currentFrame);
+						clip.setMicrosecondPosition(currentMS);
 					}
 					clip.start();
 					if (looped) {
@@ -378,7 +384,8 @@ public class AudioPlayer extends JFrame {
 					//pauses
 					paused=true;
 					playButton.setIcon(playIcon);
-					currentFrame=clip.getMicrosecondPosition()%trackLength;
+					currentMS=clip.getMicrosecondPosition()%trackLength;
+					currentFrame=clip.getLongFramePosition()%clip.getFrameLength();
 					clip.stop();
 				}
 			}
@@ -504,12 +511,14 @@ public class AudioPlayer extends JFrame {
 			setTitle("φbAudioPlayer - "+selectedFile.getName());
 			currentFile=selectedFile;
 			try {
-				if (!paused) stopPlay();
+				stopPlay();
 			} catch (Exception e1) {
 				System.err.println("Exception "+e1+" occured trying to stop audio playback after opening file");
 			}
+			currentMS=0L;
 			currentFrame=0L;
 			loadFile();
+			playButton_mouseClicked(null);
 		}
 	}
 	
@@ -525,6 +534,7 @@ public class AudioPlayer extends JFrame {
 			audioVis.byteToIntArray();
 			audioVis.repaint();
 			invalidFile=false;
+			trackLength=clip.getMicrosecondLength();
 		} catch (NullPointerException e1) {
 			System.out.println("No file chosen");
 		} catch (UnsupportedAudioFileException e1) {
