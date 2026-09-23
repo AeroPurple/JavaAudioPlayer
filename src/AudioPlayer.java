@@ -120,6 +120,7 @@ public class AudioPlayer extends JFrame {
 						if (invalidFile) throw new UnsupportedAudioFileException();
 						if (trackLength!=null) 
 							currentMS=(long) source.getValue();
+							currentFrame=(long) (source.getValue()*((float) clip.getFrameLength()/(float) trackLength));
 						clip.setMicrosecondPosition(source.getValue());
 						audioVis.repaint();
 					} catch (Exception e1) {
@@ -358,8 +359,6 @@ public class AudioPlayer extends JFrame {
 				clip.addLineListener(e1 -> {
 					if (e1.getType()==LineEvent.Type.STOP) {
 						stopPlay();
-						currentMS=0L;
-						currentFrame=0L;
 					}
 				});
 			} else {
@@ -380,8 +379,6 @@ public class AudioPlayer extends JFrame {
 					clip.addLineListener(e1 -> {
 						if (e1.getType()==LineEvent.Type.STOP) {
 							stopPlay();
-							currentMS=0L;
-							currentFrame=0L;
 						}
 					});
 				} else {
@@ -389,6 +386,7 @@ public class AudioPlayer extends JFrame {
 					paused=true;
 					playButton.setIcon(playIcon);
 					currentMS=clip.getMicrosecondPosition()%trackLength;
+					//System.out.println(currentMS);
 					currentFrame=clip.getLongFramePosition()%clip.getFrameLength();
 					clip.stop();
 				}

@@ -41,7 +41,11 @@ public class Visualizer extends JComponent {
 			if (AudioPlayer.visStyle=="Oscilloscope" && channels==2) {
 				g.setColor(Color.green);
 				try {
-					position=AudioPlayer.currentFrame;
+					if (AudioPlayer.currentFrame+renderedFrame<clip.getFrameLength()) {
+						position=AudioPlayer.currentFrame;
+					} else {
+						position=0L;
+					}
 					int loopedLength;
 					if (AudioPlayer.looped) {
 						loopedLength=audioData.length;
@@ -113,7 +117,11 @@ public class Visualizer extends JComponent {
 				}
 			} else {
 				try {
-					position=AudioPlayer.currentFrame;
+					if (AudioPlayer.currentFrame+renderedFrame<clip.getFrameLength()) {
+						position=AudioPlayer.currentFrame;
+					} else {
+						position=0L;
+					}
 					int loopedLength;
 					if (AudioPlayer.looped) {
 						loopedLength=audioData.length;
