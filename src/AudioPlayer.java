@@ -10,6 +10,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -103,6 +104,7 @@ public class AudioPlayer extends JFrame {
 		setTitle("φbAudioPlayer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 640, 480);
+		setMinimumSize(new Dimension(540, 160));
 		JPanel contentPane=new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
