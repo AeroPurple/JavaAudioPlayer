@@ -527,7 +527,7 @@ public class AudioPlayer extends JFrame {
 	}
 	
 	private void loadFile() {
-		try {
+		try { // try to use less memory? why does every new clip remain in memory??
 			System.out.println(currentFile.toString());
 			audioInputStream=AudioSystem.getAudioInputStream
 					(new File(currentFile.toString())
