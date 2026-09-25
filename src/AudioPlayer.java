@@ -104,7 +104,7 @@ public class AudioPlayer extends JFrame {
 		setTitle("φbAudioPlayer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 640, 480);
-		setMinimumSize(new Dimension(540, 160));
+		setMinimumSize(new Dimension(590, 160));
 		JPanel contentPane=new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
